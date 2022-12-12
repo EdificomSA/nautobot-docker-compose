@@ -1,3 +1,7 @@
 nautobot-device-onboarding~=1.1.2
 git+https://github.com/drobert31/napalm-ruckus-fastiron.git
-git+https://github.com/sohonet/napalm-netiron.git
+#https://github.com/Lagertonne/napalm-ruckus-fastiron
+#https://github.com/sohonet/napalm-brocade-fastiron
+#git+https://github.com/sohonet/napalm-netiron.git
+#git+https://github.com/iaa-inc/napalm-exos.git
+git+https://github.com/peterslopes/napalm-exos.git
