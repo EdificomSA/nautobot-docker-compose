@@ -1,0 +1,36 @@
+services:
+  nautobot:
+    image: "nautobot:pluginsldap"
+    build:
+      context: .
+      dockerfile: Dockerfile-PluginsLDAP
+    hostname: nautobot
+    volumes:
+      - nautobot-media-files:/opt/nautobot/media
+    #  - nautobot.key:/opt/nautobot/nautobot.key:z,ro
+    #  - nautobot.crt:/opt/nautobot/nautobot.crt:z,ro
+    #  - ./config/nautobot_config.py:/opt/nautobot/nautobot_config.py:z,ro
+    ports:
+      - "80:8080"
+      - "443:8443"
+  nautobot-worker:
+    image: "nautobot:pluginsldap"
+    build:
+      context: .
+      dockerfile: Dockerfile-PluginsLDAP
+  celery_worker:
+    image: "nautobot:pluginsldap"
+    build:
+      context: .
+      dockerfile: Dockerfile-PluginsLDAP
+  celery_beat:
+    image: "nautobot:pluginsldap"
+    build:
+      context: .
+      dockerfile: Dockerfile-PluginsLDAP
+  redis:
+    image: "redis:7-alpine"
+  db:
+    image: "postgres:14-alpine"
+volumes:
+  nautobot-media-files:

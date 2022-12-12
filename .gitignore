@@ -103,7 +103,7 @@ celerybeat.pid
 
 # Environments
 #local.env
-.env
+#.env
 .venv
 env/
 venv/
@@ -132,4 +132,4 @@ certs/nginx-selfsigned.crt
 certs/nginx-selfsigned.key
 
 # Override URLs
-*override.yml
+#*override.yml

@@ -1,0 +1,3 @@
+nautobot-device-onboarding~=1.1.2
+git+https://github.com/drobert31/napalm-ruckus-fastiron.git
+git+https://github.com/sohonet/napalm-netiron.git

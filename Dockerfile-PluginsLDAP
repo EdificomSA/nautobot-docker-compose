@@ -1,0 +1,48 @@
+ARG PYTHON_VER=3.10
+ARG NAUTOBOT_VERSION=stable
+FROM ghcr.io/nautobot/nautobot:${NAUTOBOT_VERSION}-py${PYTHON_VER} as base
+
+USER 0
+RUN apt-get update && apt-get install -y libldap2-dev libsasl2-dev libssl-dev && \
+    apt-get autoremove -y && \
+    apt-get clean all && \
+    rm -rf /var/lib/apt/lists/*
+
+# ---------------------------------
+# Stage: Builder
+# ---------------------------------
+FROM base as builder
+
+RUN apt-get update && apt-get install -y gcc git && \
+    apt-get autoremove -y && \
+    apt-get clean all && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN pip3 install --no-cache-dir --upgrade pip wheel && pip3 install --no-cache-dir django-auth-ldap
+
+# ---------------------------------
+# Stage: Final
+# ---------------------------------
+FROM base as final
+ARG PYTHON_VER
+USER 0
+
+COPY --from=builder /usr/local/lib/python${PYTHON_VER}/site-packages /usr/local/lib/python${PYTHON_VER}/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+USER nautobot:nautobot
+#VOLUME ["/opt/nautobot/media/"]
+WORKDIR /opt/nautobot
+
+RUN pip3 install --no-cache-dir --upgrade pip wheel
+
+COPY --chown=nautobot:nautobot ./plugin_requirements.txt /opt/nautobot/
+RUN pip3 install --no-cache-dir --no-warn-script-location -r /opt/nautobot/plugin_requirements.txt
+
+COPY --chown=nautobot:nautobot config/nautobot_config.append.py /opt/nautobot/
+#COPY --chown=nautobot:nautobot config/nautobot_config.py /opt/nautobot/nautobot_config.py
+#COPY --chown=nautobot:nautobot jobs/ /opt/nautobot/jobs/
+
+RUN nautobot-server init && \
+    cat /opt/nautobot/nautobot_config.append.py >> /opt/nautobot/nautobot_config.py && \
+    rm -f /opt/nautobot/nautobot_config.append.py
