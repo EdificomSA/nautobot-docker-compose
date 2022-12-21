@@ -1,4 +1,4 @@
-PLUGINS = ["nautobot_device_onboarding"]
+PLUGINS = ["nautobot_device_onboarding", "nautobot_cable_utils", "nautobot_bulk_connect"]
 #"nautobot_version_control"
 
 SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", 'False').lower() == 'true'
