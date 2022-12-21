@@ -1,4 +1,6 @@
 nautobot-device-onboarding~=1.1.2
+nautobot-cable-utils~=0.8.0
+nautobot-bulk-connect~=0.1.3
 git+https://github.com/drobert31/napalm-ruckus-fastiron.git
 #https://github.com/Lagertonne/napalm-ruckus-fastiron
 #https://github.com/sohonet/napalm-brocade-fastiron
